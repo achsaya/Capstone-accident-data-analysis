@@ -1,0 +1,91 @@
+hadoop@Abinesh:~$ hive
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/home/hadoop/apache-hive-3.1.2-bin/lib/log4j-slf4j-impl-2.10.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/hadoop/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+Hive Session ID = 99aaac3f-8cd2-4498-aa16-e7199d90c6a2
+
+Logging initialized using configuration in jar:file:/home/hadoop/apache-hive-3.1.2-bin/lib/hive-common-3.1.2.jar!/hive-log4j2.properties Async: true
+Hive Session ID = 25a2fff3-1037-4944-ab8c-76961e19ec2f
+Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+hive> show databases;
+OK
+capstone
+default
+Time taken: 1.543 seconds, Fetched: 2 row(s)
+hive> use capstone;
+OK
+Time taken: 0.085 seconds
+hive> CREATE TABLE accident (
+    >     ID STRING,
+    >     Source STRING,
+    >     Severity INT,
+    >     Start_Time TIMESTAMP,
+    >     End_Time TIMESTAMP,
+    >     Start_Lat DOUBLE,
+    >     Start_Lng DOUBLE,
+    >     End_Lat DOUBLE,
+    >     End_Lng DOUBLE,
+    >     Distance DOUBLE,
+    >     Description STRING,
+    >     City STRING,
+    >     County STRING,
+    >     State STRING,
+    >     Zipcode STRING,
+    >     Country STRING,
+    >     Weather_Condition STRING
+    > )
+    > ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+OK
+Time taken: 1.792 seconds
+hive> LOAD DATA INPATH 'accident/part-m-00000' INTO TABLE accident;
+Loading data to table capstone.accident
+OK
+Time taken: 1.54 seconds
+hive> LOAD DATA INPATH 'accident/part-m-00001' INTO TABLE accident;
+Loading data to table capstone.accident
+OK
+Time taken: 0.656 seconds
+hive> LOAD DATA INPATH 'accident/part-m-00002' INTO TABLE accident;
+Loading data to table capstone.accident
+OK
+Time taken: 0.566 seconds
+hive> LOAD DATA INPATH 'accident/part-m-00003' INTO TABLE accident;
+Loading data to table capstone.accident
+OK
+Time taken: 0.525 seconds
+hive> select * from accident limit 5;
+OK
+A-1000025       Source3 2       2021-06-17 11:25:06     2021-06-17 13:10:1740.596088        -77.862389      0.0     0.0     0.0     Lane blocked due to accident on PA-26 Standing Stone Rd both ways at Branch Rd.     Huntingdon Huntingdon       PA      16652-5274      US      Fair
+A-1000045       Source2 3       2021-06-17 19:19:22     2021-06-17 21:35:1938.670273        -77.251831      0.0     0.0     0.0     Right outside lane closed due to accident on I-95 Northbound at VA-123 Gordon Blvd. Woodbridge Prince William   VA      22191   US      Fair
+A-1000049       Source2 2       2021-06-17 05:39:53     2021-06-17 06:48:0039.809391        -86.237572      0.0     0.0     0.0     Accident on 30th St at Midvale Dr.  Indianapolis    Marion  IN      46222-1504      US      Fair
+A-1000063       Source2 3       2021-06-17 14:47:02     2021-06-17 15:50:0038.176788        -85.719193      0.0     0.0     0.0     Two lanes blocked and right hand shoulder blocked due to accident on I-65 Northbound at Preston Hwy.    Louisville      Jefferson       KY      40213   US      Fair
+A-1000074       Source2 3       2021-06-17 20:19:46     2021-06-17 21:54:4141.578121        -87.558441      0.0     0.0     0.0     Lane blocked due to accident on I-94 Bishop Ford Fwy Westbound at I-294 Exit 161.   Lansing CooIL       60438   US      Partly Cloudy
+Time taken: 3.401 seconds, Fetched: 5 row(s)
+hive> select count(*) from accident;
+Query ID = hadoop_20230919105108_838a6fbb-0c11-4a76-b4fe-b2d34d7923c6
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1695095911423_0003, Tracking URL = http://Abinesh.localdomain:8088/proxy/application_1695095911423_0003/
+Kill Command = /home/hadoop/hadoop/bin/mapred job  -kill job_1695095911423_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-09-19 10:51:30,047 Stage-1 map = 0%,  reduce = 0%
+2023-09-19 10:51:40,809 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 10.3 sec
+2023-09-19 10:51:51,631 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 19.67 sec
+MapReduce Total cumulative CPU time: 19 seconds 670 msec
+Ended Job = job_1695095911423_0003
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 19.67 sec   HDFS Read: 22290065 HDFS Write: 106 SUCCESS
+Total MapReduce CPU Time Spent: 19 seconds 670 msec
+OK
+100000
+Time taken: 45.025 seconds, Fetched: 1 row(s)
+hive>

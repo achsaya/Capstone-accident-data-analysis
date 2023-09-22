@@ -1,0 +1,99 @@
+hadoop@Abinesh:~$ sqoop import --connect jdbc:mysql://localhost/capstone --table accident --fields-terminated-by '\t' --username root -P
+Warning: /home/hadoop/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /home/hadoop/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /home/hadoop/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /home/hadoop/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+b2023-09-19 10:41:22,804 INFO sqoop.Sqoop: Running Sqoop version: 1.4.7
+eEnter password:
+2023-09-19 10:41:23,910 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+2023-09-19 10:41:23,911 INFO tool.CodeGenTool: Beginning code generation
+2023-09-19 10:41:24,554 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accident` AS t LIMIT 1
+2023-09-19 10:41:24,608 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accident` AS t LIMIT 1
+2023-09-19 10:41:24,674 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /home/hadoop/hadoop
+Note: /tmp/sqoop-hadoop/compile/69f8ecc5260cac63fdf661a6f4b257de/accident.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+2023-09-19 10:41:27,765 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hadoop/compile/69f8ecc5260cac63fdf661a6f4b257de/accident.jar
+2023-09-19 10:41:27,812 WARN manager.MySQLManager: It looks like you are importing from mysql.
+2023-09-19 10:41:27,812 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+2023-09-19 10:41:27,813 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+2023-09-19 10:41:27,813 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+2023-09-19 10:41:27,822 INFO mapreduce.ImportJobBase: Beginning import of accident
+2023-09-19 10:41:27,824 INFO Configuration.deprecation: mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2023-09-19 10:41:28,091 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+2023-09-19 10:41:29,659 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+2023-09-19 10:41:29,874 INFO client.DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at /127.0.0.1:8032
+2023-09-19 10:41:30,837 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/hadoop/.staging/job_1695095911423_0002
+2023-09-19 10:41:32,730 INFO db.DBInputFormat: Using read commited transaction isolation
+2023-09-19 10:41:32,731 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`ID`), MAX(`ID`) FROM `accident`
+2023-09-19 10:41:32,740 WARN db.TextSplitter: Generating splits for a textual index column.
+2023-09-19 10:41:32,740 WARN db.TextSplitter: If your database sorts in a case-insensitive order, this may result in a partial import or duplicate records.
+2023-09-19 10:41:32,741 WARN db.TextSplitter: You are strongly encouraged to choose an integral split column.
+2023-09-19 10:41:33,338 INFO mapreduce.JobSubmitter: number of splits:4
+2023-09-19 10:41:33,703 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1695095911423_0002
+2023-09-19 10:41:33,704 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2023-09-19 10:41:34,170 INFO conf.Configuration: resource-types.xml not found
+2023-09-19 10:41:34,171 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2023-09-19 10:41:35,680 INFO impl.YarnClientImpl: Submitted application application_1695095911423_0002
+2023-09-19 10:41:35,854 INFO mapreduce.Job: The url to track the job: http://Abinesh.localdomain:8088/proxy/application_1695095911423_0002/
+2023-09-19 10:41:35,855 INFO mapreduce.Job: Running job: job_1695095911423_0002
+2023-09-19 10:41:55,343 INFO mapreduce.Job: Job job_1695095911423_0002 running in uber mode : false
+2023-09-19 10:41:55,347 INFO mapreduce.Job:  map 0% reduce 0%
+2023-09-19 10:42:14,015 INFO mapreduce.Job:  map 50% reduce 0%
+2023-09-19 10:42:17,064 INFO mapreduce.Job:  map 100% reduce 0%
+2023-09-19 10:42:18,096 INFO mapreduce.Job: Job job_1695095911423_0002 completed successfully
+2023-09-19 10:42:18,319 INFO mapreduce.Job: Counters: 33
+        File System Counters
+                FILE: Number of bytes read=0
+                FILE: Number of bytes written=1125576
+                FILE: Number of read operations=0
+                FILE: Number of large read operations=0
+                FILE: Number of write operations=0
+                HDFS: Number of bytes read=541
+                HDFS: Number of bytes written=22274088
+                HDFS: Number of read operations=24
+                HDFS: Number of large read operations=0
+                HDFS: Number of write operations=8
+                HDFS: Number of bytes read erasure-coded=0
+        Job Counters
+                Launched map tasks=4
+                Other local map tasks=4
+                Total time spent by all maps in occupied slots (ms)=65266
+                Total time spent by all reduces in occupied slots (ms)=0
+                Total time spent by all map tasks (ms)=65266
+                Total vcore-milliseconds taken by all map tasks=65266
+                Total megabyte-milliseconds taken by all map tasks=66832384
+        Map-Reduce Framework
+                Map input records=100000
+                Map output records=100000
+                Input split bytes=541
+                Spilled Records=0
+                Failed Shuffles=0
+                Merged Map outputs=0
+                GC time elapsed (ms)=1618
+                CPU time spent (ms)=47510
+                Physical memory (bytes) snapshot=1017421824
+                Virtual memory (bytes) snapshot=10275713024
+                Total committed heap usage (bytes)=748683264
+                Peak Map Physical memory (bytes)=269213696
+                Peak Map Virtual memory (bytes)=2575278080
+        File Input Format Counters
+                Bytes Read=0
+        File Output Format Counters
+                Bytes Written=22274088
+2023-09-19 10:42:18,330 INFO mapreduce.ImportJobBase: Transferred 21.2422 MB in 48.653 seconds (447.0857 KB/sec)
+2023-09-19 10:42:18,337 INFO mapreduce.ImportJobBase: Retrieved 100000 records.
+hadoop@Abinesh:~$ hadoop fs -ls
+Found 1 items
+drwxr-xr-x   - hadoop supergroup          0 2023-09-19 10:42 accident
+hadoop@Abinesh:~$ hadoop fs -ls accident
+Found 5 items
+-rw-r--r--   1 hadoop supergroup          0 2023-09-19 10:42 accident/_SUCCESS
+-rw-r--r--   1 hadoop supergroup    7103128 2023-09-19 10:42 accident/part-m-00000
+-rw-r--r--   1 hadoop supergroup    7200651 2023-09-19 10:42 accident/part-m-00001
+-rw-r--r--   1 hadoop supergroup    7050372 2023-09-19 10:42 accident/part-m-00002
+-rw-r--r--   1 hadoop supergroup     919937 2023-09-19 10:42 accident/part-m-00003
+hadoop@Abinesh:~$
