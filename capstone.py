@@ -73,7 +73,6 @@ stateMappingData = spark.createDataFrame([
 
 # Perform a left join to map state names while preserving the original data
 df = df.join(stateMappingData, on="state", how="left")
-df = df.filter(df.id != "A-6529351")
 # Replace null values in "state" with the original "state" column value
 df = df.withColumn("state_name", when(col("state_name").isNull(), col("state")).otherwise(col("state_name")))
 
@@ -94,17 +93,13 @@ df = df.withColumn("duration_minutes",
 # Calculate the duration in hours
 df = df.withColumn("duration_hours",
                                            (unix_timestamp(col("end_time")) - unix_timestamp(col("start_time"))) / 3600)
-
-# Filter high severity incidents with duration > 60 minutes
-filteredIncidents = df.filter((col("severity") == 3) & (col("duration_minutes") > 60))
-
-# Group by severity_category and pivot on weather_condition, then calculate the average duration
-summaryPivot = df.groupBy("severity_category") \
-    .pivot("weather_condition") \
-    .agg(avg("duration_minutes"))
-
 # Extract the day of the week from the 'start_time' column
 df = df.withColumn("day_of_week", dayofweek(col("start_time")))
+
+
+#Analysis Part
+# Filter high severity incidents with duration > 60 minutes
+filteredIncidents = df.filter((col("severity") == 3) & (col("duration_minutes") > 60))
 
 # Group incidents by day of the week and calculate the incident count
 dayOfWeekAggregated = df.groupBy("day_of_week") \
@@ -129,7 +124,6 @@ df = df.withColumnRenamed("end_lng", "longitude_end")
 df.show()
 # Show the results
 filteredIncidents.show()
-#summaryPivot.show()
 dayOfWeekAggregated.show()
 cityAggregated.show()
 stateSeverityAggregated.show()
