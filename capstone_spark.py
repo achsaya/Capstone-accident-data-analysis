@@ -140,6 +140,9 @@ cityAggregated = df.groupBy("city") \
     .agg(count("*").alias("incident_count")) \
     .orderBy(col("incident_count").desc())
 
+# Group by the "Traffic_Signal" column and calculate the count of accidents
+accident_count_by_traffic_signal = df.groupBy("Traffic_Signal").agg(count("*").alias("AccidentCount"))
+
 # Analyze accidents by state and severity
 stateSeverityAggregated = df.groupBy("state", "severity_category") \
     .agg(count("*").alias("incident_count")) \
