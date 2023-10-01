@@ -1,0 +1,121 @@
+hadoop@Abinesh:~$ mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 5.7.42 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use capstone
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> ls
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ls' at line 1
+mysql> show tables;
++--------------------+
+| Tables_in_capstone |
++--------------------+
+| accident           |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE accident_new (
+ VAR    ->     ID VARCHAR(10),
+    ->     Source VARCHAR(10),
+    ->     Severity INT,
+    ->     Start_Time DATETIME,
+    ->     End_Time DATETIME,
+    ->     Start_Lat DECIMAL(8, 6),
+    ->     Start_Lng DECIMAL(9, 6),
+    ->     Street VARCHAR(255),
+    ->     City VARCHAR(255),
+    ->     State VARCHAR(2),
+    ->     Zipcode VARCHAR(10),
+    ->     Country VARCHAR(2),
+    ->     Traffic_Signal BOOLEAN,
+    ->     Weather_Condition VARCHAR(255)
+    -> );
+Query OK, 0 rows affected (0.83 sec)
+
+mysql> describe accident_new;
++-------------------+--------------+------+-----+---------+-------+
+| Field             | Type         | Null | Key | Default | Extra |
++-------------------+--------------+------+-----+---------+-------+
+| ID                | varchar(10)  | YES  |     | NULL    |       |
+| Source            | varchar(10)  | YES  |     | NULL    |       |
+| Severity          | int(11)      | YES  |     | NULL    |       |
+| Start_Time        | datetime     | YES  |     | NULL    |       |
+| End_Time          | datetime     | YES  |     | NULL    |       |
+| Start_Lat         | decimal(8,6) | YES  |     | NULL    |       |
+| Start_Lng         | decimal(9,6) | YES  |     | NULL    |       |
+| Street            | varchar(255) | YES  |     | NULL    |       |
+| City              | varchar(255) | YES  |     | NULL    |       |
+| State             | varchar(2)   | YES  |     | NULL    |       |
+| Zipcode           | varchar(10)  | YES  |     | NULL    |       |
+| Country           | varchar(2)   | YES  |     | NULL    |       |
+| Traffic_Signal    | tinyint(1)   | YES  |     | NULL    |       |
+| Weather_Condition | varchar(255) | YES  |     | NULL    |       |
++-------------------+--------------+------+-----+---------+-------+
+14 rows in set (0.15 sec)
+
+mysql> ALTER TABLE accident_new ADD PRIMARY KEY (ID);
+Query OK, 0 rows affected (0.54 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe accident_new;
++-------------------+--------------+------+-----+---------+-------+
+| Field             | Type         | Null | Key | Default | Extra |
++-------------------+--------------+------+-----+---------+-------+
+| ID                | varchar(10)  | NO   | PRI | NULL    |       |
+| Source            | varchar(10)  | YES  |     | NULL    |       |
+| Severity          | int(11)      | YES  |     | NULL    |       |
+| Start_Time        | datetime     | YES  |     | NULL    |       |
+| End_Time          | datetime     | YES  |     | NULL    |       |
+| Start_Lat         | decimal(8,6) | YES  |     | NULL    |       |
+| Start_Lng         | decimal(9,6) | YES  |     | NULL    |       |
+| Street            | varchar(255) | YES  |     | NULL    |       |
+| City              | varchar(255) | YES  |     | NULL    |       |
+| State             | varchar(2)   | YES  |     | NULL    |       |
+| Zipcode           | varchar(10)  | YES  |     | NULL    |       |
+| Country           | varchar(2)   | YES  |     | NULL    |       |
+| Traffic_Signal    | tinyint(1)   | YES  |     | NULL    |       |
+| Weather_Condition | varchar(255) | YES  |     | NULL    |       |
++-------------------+--------------+------+-----+---------+-------+
+14 rows in set (0.00 sec)
+
+mysql> LOAD DATA INFILE '~/accident_new.csv' INTO TABLE accident_new FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 LINES;
+ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement
+mysql> LOAD DATA LOCAL INFILE '~/accident_new.csv' INTO TABLE accident_new FIELDS TERMINATED BY ',' LINES TERMINATED BY
+'\n' IGNORE 1 LINES;
+
+Query OK, 4000000 rows affected, 65535 warnings (13 min 20.74 sec)
+Records: 4000000  Deleted: 0  Skipped: 0  Warnings: 5197743
+
+mysql>
+mysql> select * from accident_new limit 10;
++-----------+---------+----------+---------------------+---------------------+-----------+-------------+---------------------+-----------------+-------+------------+---------+----------------+-------------------+
+| ID        | Source  | Severity | Start_Time          | End_Time            | Start_Lat | Start_Lng   | Street              | City            | State | Zipcode    | Country | Traffic_Signal | Weather_Condition |
++-----------+---------+----------+---------------------+---------------------+-----------+-------------+---------------------+-----------------+-------+------------+---------+----------------+-------------------+
+| A-1       | Source2 |        3 | 2016-02-08 05:46:00 | 2016-02-08 11:00:00 | 39.865147 |  -84.058723 | I-70 E              | Dayton          |       | 45424      | US      |              0 | Light Rain
+| A-100     | Source2 |        2 | 2016-02-11 08:13:24 | 2016-02-11 08:43:24 | 39.749916 |  -84.139359 | US-35 E             | Dayton          | |H    | 45410      | US      |              0 | Scattered Clouds
+| A-10000   | Source2 |        3 | 2017-01-06 16:22:04 | 2017-01-06 16:51:29 | 38.574406 | -121.577354 | I-80 W              | West Sacramento |            |1      | US      |              0 | Clear
+| A-100000  | Source2 |        2 | 2016-04-05 15:47:30 | 2016-04-05 16:47:30 | 33.940449 | -117.875900 | CA-57 S             | Brea            |            |1      | US      |              0 | Clear
+| A-1000003 | Source2 |        3 | 2021-06-17 07:42:21 | 2021-06-17 08:11:44 | 38.871468 |  -77.295448 | I-66 W              | Fairfax         |             |      | US      |              0 | Fair
+| A-1000005 | Source2 |        2 | 2021-06-17 07:53:41 | 2021-06-17 09:13:25 | 38.762218 |  -78.633835 | Mount Jackson Rd    | Mount Jackson   |             |      | US      |              0 | Fair
+| A-1000006 | Source2 |        2 | 2021-06-17 07:56:49 | 2021-06-17 09:11:36 | 38.934689 |  -77.533043 | Hutchinson Farm Dr  | Chantilly       |             |      | US      |              0 | Fair
+| A-1000010 | Source2 |        2 | 2021-06-17 06:31:03 | 2021-06-17 09:25:53 | 40.074600 |  -76.389374 | Chapel Forge Dr     | Lancaster       |             |-1654 | US      |              0 | Fair
+| A-1000011 | Source2 |        2 | 2021-06-17 08:19:09 | 2021-06-17 09:18:56 | 38.930321 |  -76.973701 | Rhode Island Ave NE | Washington      |             |-2827 | US      |              0 | Fair
+| A-1000012 | Source2 |        2 | 2021-06-17 06:31:03 | 2021-06-17 09:01:55 | 40.040390 |  -76.313164 | N Charlotte St      | Lancaster       |             |-3452 | US      |              0 | Fair
++-----------+---------+----------+---------------------+---------------------+-----------+-------------+---------------------+-----------------+-------+------------+---------+----------------+-------------------+
+10 rows in set (0.05 sec)
+
+mysql>

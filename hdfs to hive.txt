@@ -1,0 +1,57 @@
+hadoop@Abinesh:~$ hive
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/home/hadoop/apache-hive-3.1.2-bin/lib/log4j-slf4j-impl-2.10.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/hadoop/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+Hive Session ID = 42e40b26-4eac-4c4c-9ed6-face2f0ad023
+
+Logging initialized using configuration in jar:file:/home/hadoop/apache-hive-3.1.2-bin/lib/hive-common-3.1.2.jar!/hive-log4j2.properties Async: true
+Hive Session ID = 2657ca61-a8db-4e12-a70d-50f19beac722
+Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+hive> use capstone;
+OK
+Time taken: 0.346 seconds
+hive> CREATE TABLE accident_new (
+    >     ID STRING,
+    >     Source STRING,
+    >     Severity INT,
+    >     Start_Time STRING,
+    >     End_Time STRING,
+    >     Start_Lat DOUBLE,
+    >     Start_Lng DOUBLE,
+    >     Street STRING,
+    >     City STRING,
+    >     State STRING,
+    >     Zipcode STRING,
+    >     Country STRING,
+    >     Traffic_Signal BOOLEAN,
+    >     Weather_Condition STRING
+    > )
+    > ROW FORMAT DELIMITED
+    > FIELDS TERMINATED BY '\t';
+OK
+Time taken: 0.556 seconds
+hive> LOAD DATA INPATH 'accident_new/part-m-00000' INTO TABLE accident_new;
+Loading data to table capstone.accident_new
+OK
+Time taken: 0.757 seconds
+hive> LOAD DATA INPATH 'accident_new/part-m-00001' INTO TABLE accident_new;
+Loading data to table capstone.accident_new
+OK
+Time taken: 0.234 seconds
+hive> LOAD DATA INPATH 'accident_new/part-m-00002' INTO TABLE accident_new;
+Loading data to table capstone.accident_new
+OK
+Time taken: 0.187 seconds
+hive> LOAD DATA INPATH 'accident_new/part-m-00003' INTO TABLE accident_new;
+Loading data to table capstone.accident_new
+OK
+Time taken: 0.191 seconds
+hive> select * from accident_new limit 3;
+OK
+A-1     Source2 3       2016-02-08 05:46:00.0   2016-02-08 11:00:00.0   39.865147       -84.058723      I-70 E  Dayton  OH      45424   US     false    Light Rain
+A-100   Source2 2       2016-02-11 08:13:24.0   2016-02-11 08:43:24.0   39.749916       -84.139359      US-35 E Dayton  OH      45410   US     false    Scattered Clouds
+A-10000 Source2 3       2017-01-06 16:22:04.0   2017-01-06 16:51:29.0   38.574406       -121.577354     I-80 W  West Sacramento CA      95691  US       false   Clear
+Time taken: 1.169 seconds, Fetched: 3 row(s)
+hive>
